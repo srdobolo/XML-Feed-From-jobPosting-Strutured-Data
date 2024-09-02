@@ -1,6 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import json
+import html
 
 # Base URL for the find-jobs section
 base_url = 'https://smart-recruitments.framer.website/find-jobs/'
@@ -36,37 +37,41 @@ for job_link in job_links:
     # Locate the <script> tag containing the JSON
     script_tag = job_soup.find('script', type='application/ld+json')
 
-    if script_tag:
+    if script_tag and script_tag.string:
         json_content = script_tag.string
 
-        # Parse the JSON content
-        data = json.loads(json_content)
+        try:
+            # Unescape any HTML entities that may be in the JSON content
+            json_content_unescaped = html.unescape(json_content)
 
-        # Extract fields
-        # hiring_organization = 
-        # organization_name = hiring_organization.get('name', 'No Name Provided')
+            # Parse the JSON content
+            data = json.loads(json_content_unescaped)
 
-        rss_feed += f'''
-        <job>
-          <title><![CDATA[{data.get('title', 'No Title')}]]></title>
-          <date><![CDATA[{data.get('datePosted', 'No Date')}]]></date>
-          <referencenumber><![CDATA[{data.get('identifier', {}).get('value', 'No Reference Number')}]]></referencenumber>
-          <url><![CDATA[{job_url}]]></url>
-          <company><![CDATA[{data.get('hiringOrganization', {}).get('name', 'No Name Provided')}]]></company>
-          <city><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressLocality', 'No City')}]]></city>
-          <state><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressRegion', 'No State')}]]></state>
-          <country><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressCountry', 'No Country')}]]></country>
-          <remote><![CDATA[{data.get('jobLocationType', 'No Remote Info')}]]></remote>
-          <postalcode><![CDATA[{data.get('PostalAddress', 'No Postal Code')}]]></postalcode>
-          <description><![CDATA[{data.get('description', 'No Description')}]]></description>
-          <jobtype><![CDATA[{data.get('employmentType', 'No Job Type')}]]></jobtype>
-          <category><![CDATA[{data.get('category', 'No Category')}]]></category>
-        </job>'''
+            # Extract fields and build the RSS feed item
+            rss_feed += f'''
+            <job>
+              <title><![CDATA[{data.get('title', 'No Title')}]]></title>
+              <date><![CDATA[{data.get('datePosted', 'No Date')}]]></date>
+              <referencenumber><![CDATA[{data.get('identifier', {}).get('value', 'No Reference Number')}]]></referencenumber>
+              <url><![CDATA[{job_url}]]></url>
+              <company><![CDATA[{data.get('hiringOrganization', {}).get('name', 'No Name Provided')}]]></company>
+              <city><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressLocality', 'No City')}]]></city>
+              <state><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressRegion', 'No State')}]]></state>
+              <country><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressCountry', 'No Country')}]]></country>
+              <remote><![CDATA[{data.get('jobLocationType', 'No Remote Info')}]]></remote>
+              <postalcode><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('postalCode', 'No Postal Code')}]]></postalcode>
+              <description><![CDATA[{data.get('description', 'No Description')}]]></description>
+              <jobtype><![CDATA[{data.get('employmentType', 'No Job Type')}]]></jobtype>
+              <category><![CDATA[{data.get('category', 'No Category')}]]></category>
+            </job>'''
+
+        except json.JSONDecodeError:
+            print(f"Error decoding JSON from {job_url}")
 
 # Close the RSS feed
 rss_feed += '''
 </source>'''
 
-# Save the combined feed to a file
-with open('feed.xml', 'w') as f:
+# Save the combined feed to a file with UTF-8 encoding
+with open('feed.xml', 'w', encoding='utf-8') as f:
     f.write(rss_feed)
