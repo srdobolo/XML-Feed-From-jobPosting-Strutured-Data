@@ -4,7 +4,7 @@ import json
 import html
 
 # Base URL for the find-jobs section
-base_url = 'https://smart-recruitments.framer.website/find-jobs/'
+base_url = 'https://smart-recruitments.com/find-jobs-xml/'
 
 # Step 1: Load the main jobs page to find all job links
 response = requests.get(base_url)
@@ -14,7 +14,7 @@ html_content = response.content
 soup = BeautifulSoup(html_content, 'html.parser')
 
 # Assuming job links are inside <a> tags with href pointing to the job details page
-job_links = [a['href'] for a in soup.find_all('a', href=True) if '/find-jobs/' in a['href']]
+job_links = [a['href'] for a in soup.find_all('a', href=True) if '/find-jobs-xml/' in a['href']]
 
 # Prepare the base of the RSS feed
 rss_feed = '''<?xml version="1.0" encoding="UTF-8" ?>
@@ -51,7 +51,8 @@ for job_link in job_links:
             rss_feed += f'''
             <job>
               <title><![CDATA[{data.get('title', 'No Title')}]]></title>
-              <date><![CDATA[{data.get('datePosted', 'No Date')}]]></date>
+              <company><![CDATA[SmartRecruitments]]></company>
+              <dateposted><![CDATA[{data.get('datePosted', 'No Date')}]]></dateposted>
               <referencenumber><![CDATA[{data.get('identifier', {}).get('value', 'No Reference Number')}]]></referencenumber>
               <url><![CDATA[{job_url}]]></url>
               <company><![CDATA[{data.get('hiringOrganization', {}).get('name', 'No Name Provided')}]]></company>
@@ -75,3 +76,4 @@ rss_feed += '''
 # Save the combined feed to a file with UTF-8 encoding
 with open('feed.xml', 'w', encoding='utf-8') as f:
     f.write(rss_feed)
+
