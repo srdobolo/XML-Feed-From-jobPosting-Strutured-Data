@@ -1,0 +1,42 @@
+name: Run Script Daily
+
+on:
+  schedule:
+    # This cron expression runs the workflow every day at midnight (00:00 UTC)
+    - cron: '0 0 * * *'
+
+jobs:
+  update-xml:
+    runs-on: ubuntu-latest
+    
+    steps:
+    # Step 1: Checkout the repository
+    - name: Checkout repository
+      uses: actions/checkout@v2
+    
+    # Step 2: Set up Python 3.7.9
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.7.9'  # Python version needed by your script
+
+    # Step 3: Install dependencies (if required by your script)
+    - name: Install dependencies
+      run: |
+        pip install -r requirements.txt  
+      # If your script requires dependencies
+
+    # Step 4: Run the script
+    - name: Run Script
+      run: |
+        python Script  
+      # Replace with the actual name of your script
+
+    # Step 5: Commit and push the updated XML file
+    - name: Commit and push changes
+      run: |
+        git config --global user.name "Your Name"
+        git config --global user.email "your-email@example.com"
+        git add feed.xml
+        git commit -m "Daily update of feed.xml"
+        git push
