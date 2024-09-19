@@ -28,7 +28,7 @@ The script does not require manual variable replacements. It dynamically retriev
     python script.py
     ```
 
-3. **Output**: The script will generate a `feed.xml` file in the same directory containing the RSS feed.
+3. **Output**: The script will generate a [`feed.xml`](https://srdobolo.github.io/XML-Feed-From-jobPosting-Strutured-Data/feed.xml) file in the same directory containing the RSS feed.
 
 ## Contributing
 
