@@ -7,7 +7,10 @@ on:
 
 jobs:
   update-xml:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
     
     steps:
     # Step 1: Checkout the repository
@@ -18,7 +21,7 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v3
       with:
-        python-version: '3.10'  # Python version needed by your script
+        python-version: '3.6' # Python version needed by your script
 
     # Step 3: Install dependencies (if required by your script)
     - name: Install dependencies
@@ -44,3 +47,4 @@ jobs:
         git add feed.xml
         git commit -m "Daily update of feed.xml"
         git push
+
