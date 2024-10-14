@@ -12,6 +12,9 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest]
 
+    container:
+      image: python:3.6  # Use a Docker image with Python 3.6 pre-installed
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
