@@ -7,7 +7,7 @@ on:
 
 jobs:
   update-xml:
-    runs-on: ubuntu-latest  # Running on Linux since you're using Docker
+    runs-on: ubuntu-latest  # Docker runs on a Linux environment
 
     container:
       image: python:3.6  # Use a Docker image with Python 3.6 pre-installed
@@ -19,9 +19,7 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        # Exclude pywin32 (Windows-only package) and install remaining dependencies
-        sed '/pywin32/d' requirements.txt > requirements_linux.txt
-        pip install -r requirements_linux.txt
+        pip install -r requirements.txt  # Ensure this does not try to install pywin32 on Linux
 
     - name: Run Script
       run: |
