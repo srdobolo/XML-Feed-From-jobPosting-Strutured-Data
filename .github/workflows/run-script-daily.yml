@@ -23,6 +23,7 @@ jobs:
     # Step 3: Install dependencies (if required by your script)
     - name: Install dependencies
       run: |
+        set -e
         python -m pip install --upgrade pip
         pip install -r requirements.txt  
       # If your script requires dependencies
@@ -30,12 +31,14 @@ jobs:
     # Step 4: Run the script
     - name: Run Script
       run: |
+        set -e
         python Script  
       # Replace with the actual name of your script
 
     # Step 5: Commit and push the updated XML file
     - name: Commit and push changes
       run: |
+        set -e
         git config --global user.name "Your Name"
         git config --global user.email "your-email@example.com"
         git add feed.xml
