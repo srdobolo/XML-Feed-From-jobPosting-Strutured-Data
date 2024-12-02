@@ -4,7 +4,7 @@ import json
 import html
 
 # Base URL for the find-jobs section
-base_url = 'https://smart-recruitments.com/find-jobs-xml/'
+base_url = 'https://smart-recruitments.com/find-jobs-all/'
 
 # Step 1: Load the main jobs page to find all job links
 response = requests.get(base_url)
@@ -14,7 +14,8 @@ html_content = response.content
 soup = BeautifulSoup(html_content, 'html.parser')
 
 # Assuming job links are inside <a> tags with href pointing to the job details page
-job_links = [a['href'] for a in soup.find_all('a', href=True) if '/find-jobs-xml/' in a['href']]
+# Deduplicate links by converting to a set and back to a list
+job_links = list(set([a['href'] for a in soup.find_all('a', href=True) if '/find-jobs-all/' in a['href']]))
 
 # Prepare the base of the RSS feed
 rss_feed = '''<?xml version="1.0" encoding="UTF-8" ?>
@@ -26,7 +27,7 @@ rss_feed = '''<?xml version="1.0" encoding="UTF-8" ?>
 for job_link in job_links:
     # Full URL for each job link
     job_url = base_url + job_link.split('/')[-1]
-    
+
     # Fetch the job details page
     response = requests.get(job_url)
     job_html_content = response.content
@@ -50,20 +51,21 @@ for job_link in job_links:
             # Extract fields and build the RSS feed item
             rss_feed += f'''
             <job>
-              <title><![CDATA[{data.get('title', 'No Title')}]]></title>
-              <company><![CDATA[SmartRecruitments]]></company>
-              <dateposted><![CDATA[{data.get('datePosted', 'No Date')}]]></dateposted>
-              <referencenumber><![CDATA[{data.get('identifier', {}).get('value', 'No Reference Number')}]]></referencenumber>
+              <title><![CDATA[{data.get('title', 'undisclosed')}]]></title>
+              <date><![CDATA[{data.get('datePosted', 'undisclosed')}]]></date>
+              <referencenumber><![CDATA[{data.get('identifier', {}).get('value', 'undisclosed')}]]></referencenumber>
               <url><![CDATA[{job_url}]]></url>
-              <company><![CDATA[{data.get('hiringOrganization', {}).get('name', 'No Name Provided')}]]></company>
-              <city><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressLocality', 'No City')}]]></city>
-              <state><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressRegion', 'No State')}]]></state>
-              <country><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressCountry', 'No Country')}]]></country>
-              <remote><![CDATA[{data.get('jobLocationType', 'No Remote Info')}]]></remote>
-              <postalcode><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('postalCode', 'No Postal Code')}]]></postalcode>
-              <description><![CDATA[{data.get('description', 'No Description')}]]></description>
-              <jobtype><![CDATA[{data.get('employmentType', 'No Job Type')}]]></jobtype>
-              <category><![CDATA[{data.get('category', 'No Category')}]]></category>
+              <company><![CDATA[{data.get('hiringOrganization', {}).get('name', 'undisclosed')}]]></company>
+              <city><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressLocality', 'undisclosed')}]]></city>
+              <state><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressRegion', 'undisclosed')}]]></state>
+              <country><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressCountry', 'undisclosed')}]]></country>
+              <remote><![CDATA[{data.get('jobLocationType', 'WFO')}]]></remote>
+              <postalcode><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('postalCode', 'undisclosed')}]]></postalcode>
+              <description><![CDATA[{data.get('description', 'undisclosed')}]]></description>
+              <jobtype><![CDATA[{data.get('employmentType', 'undisclosed')}]]></jobtype>
+              <category><![CDATA[{data.get('category', 'undisclosed')}]]></category>
+              <salary><![CDATA[{data.get('baseSalary', {}).get('value', {}).get('value', 'undisclosed')}]]></salary>
+              <email><![CDATA[info@smart-recruitments.com]]></email>
             </job>'''
 
         except json.JSONDecodeError:
@@ -77,3 +79,4 @@ rss_feed += '''
 with open('feed.xml', 'w', encoding='utf-8') as f:
     f.write(rss_feed)
 
+    print(rss_feed)
