@@ -1,4 +1,4 @@
-name: Run Script Daily
+name: run main.py
 
 on:
   schedule:
@@ -23,7 +23,7 @@ jobs:
 
     - name: Run Script
       run: |
-        python your_script.py  # Ensure the script name is correct
+        python main.py  # Ensure the script name is correct
 
     - name: Commit and push changes
       run: |
