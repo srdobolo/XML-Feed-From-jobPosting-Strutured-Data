@@ -14,7 +14,7 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: setup python
+    - name: Setup Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.7'
@@ -29,9 +29,13 @@ jobs:
         python main.py  # Ensure the script name is correct
 
     - name: Commit and push changes
+      env:
+        TOKEN: ${{ secrets.GH_TOKEN }}  # Ensure GH_TOKEN is set as a repository secret
       run: |
-        git config --global user.name "Your Name"
-        git config --global user.email "your-email@example.com"
+        git config --global user.name "GitHub Actions Bot"
+        git config --global user.email "actions@github.com"
+        git pull origin main --rebase
         git add feed.xml
         git commit -m "Daily update of feed.xml"
-        git push
+        git push https://x-access-token:${TOKEN}@github.com/srdobolo/XML-Feed-From-jobPosting-Strutured-Data.git
+
