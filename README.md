@@ -1,6 +1,6 @@
-# Job Listing RSS Feed Generator
+# XML Feed From Job Posting Structured Data
 
-This repository contains a Python script to generate an RSS feed for job listings from the SmartRecruitments website. The script fetches job postings from the specified URL, extracts relevant details, and creates an RSS feed in XML format.
+This repository is designed to generate an XML feed based on job posting structured data using a Python script. It automates the process of generating an XML file for job postings, ensuring compliance with structured data standards and facilitating integrations with third-party systems.
 
 ## Overview
 
@@ -12,28 +12,107 @@ The script performs the following steps:
 4. Compiles the job details into an RSS feed format.
 5. Saves the RSS feed to an XML file.
 
-## Variables
+## Features
 
-The script does not require manual variable replacements. It dynamically retrieves and processes job data directly from the target website.
+- Generates an XML feed (`feed.xml`) for job postings.
+- Scheduled updates using GitHub Actions.
+- Customizable logic for parsing and generating structured data.
+- Lightweight and efficient.
 
-## Usage
+---
 
-1. **Install Dependencies**: Ensure you have the required Python packages. Install them using:
-    ```bash
-    pip install requests beautifulsoup4
-    ```
+## Requirements
 
-2. **Run the Script**: Execute the script using Python:
-    ```bash
-    python script.py
-    ```
+- Python 3.7 or higher.
+- Required Python dependencies (see `requirements.txt`).
+- GitHub Actions configured with appropriate permissions for automation.
 
-3. **Output**: The script will generate a [feed.xml](feed.xml) file in the same directory containing the RSS feed.
+---
+
+## Installation and Usage
+
+### 1. Clone the Repository
+```bash
+git clone https://github.com/srdobolo/XML-Feed-From-jobPosting-Strutured-Data.git
+cd XML-Feed-From-jobPosting-Strutured-Data
+```
+
+### 2. Set Up Environment
+
+#### Install Python Dependencies
+```bash
+pip install -r requirements.txt
+```
+
+### 3. Run the Script
+
+To manually generate the XML feed:
+```bash
+python main.py
+```
+The generated XML file will be saved as `feed.xml` in the repository root.
+
+---
+
+## GitHub Actions Workflow
+
+The repository includes a GitHub Actions workflow to automate the generation and commit of the `feed.xml` file:
+
+### **Workflow Trigger**
+
+The workflow is triggered by:
+- **Scheduled runs** (every hour).
+- **Manual dispatch**.
+
+### **How It Works**
+1. The script runs via GitHub Actions.
+2. The `feed.xml` file is updated with the latest job posting data.
+3. Changes are committed and pushed to the repository.
+
+### Secrets Configuration
+
+Ensure the following secrets are added to your GitHub repository:
+- **`GH_TOKEN`**: A GitHub token with `write` permissions to allow automated commits.
+
+### Modifying the Schedule
+
+The schedule is defined in the workflow file (`.github/workflows/run-main.yml`). To update the schedule:
+
+```yaml
+schedule:
+  - cron: '0 * * * *' # Runs every hour
+```
+Modify the cron expression as needed.
+
+---
+
+## File Structure
+
+```
+├── main.py              # Python script to generate the XML feed
+├── feed.xml             # Generated XML file
+├── requirements.txt     # Python dependencies
+├── .github/workflows    # GitHub Actions workflow configuration
+├── README.md            # Project documentation
+```
+
+---
 
 ## Contributing
 
-Contributions are welcome! Feel free to open issues or submit pull requests with improvements or suggestions.
+Contributions are welcome! To contribute:
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix.
+3. Submit a pull request.
+
+---
 
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
+
+## Support
+
+If you encounter any issues or have questions, feel free to open an issue in this repository.
