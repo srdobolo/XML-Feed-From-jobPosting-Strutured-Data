@@ -65,7 +65,7 @@ for job_link in job_links:
               <jobtype><![CDATA[{data.get('employmentType', 'undisclosed')}]]></jobtype>
               <category><![CDATA[{data.get('category', 'undisclosed')}]]></category>
               <salary><![CDATA[{data.get('baseSalary', {}).get('value', {}).get('value', 'undisclosed')}]]></salary>
-              <email><![CDATA[info@smart-recruitments.com]]></email>
+              <email><![CDATA[joao.lima@smart-recruitments.com]]></email>
             </job>'''
 
         except json.JSONDecodeError:
