@@ -18,7 +18,7 @@ soup = BeautifulSoup(html_content, 'html.parser')
 job_links = list(set([a['href'] for a in soup.find_all('a', href=True) if '/find-jobs-all/' in a['href']]))
 
 # Prepare the base of the RSS feed
-rss_feed = '''<?xml version="1.0" encoding="UTF-8" ?>
+rss_feed = '''<?xml version="1.0" encoding="UTF-8"?>
 <source>
     <publisher>SmartRecruitments</publisher>
     <publisherurl>https://www.smart-recruitments.com</publisherurl>'''
