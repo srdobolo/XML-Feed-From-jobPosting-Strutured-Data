@@ -64,7 +64,7 @@ for job_link in job_links:
               <postalcode><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('postalCode', 'undisclosed')}]]></postalcode>
               <description><![CDATA[{data.get('description', 'undisclosed')}]]></description>
               <jobtype><![CDATA[{data.get('employmentType', 'undisclosed')}]]></jobtype>
-              <category><![CDATA[{data.get('Industry', 'undisclosed')}]]></category>
+              <category><![CDATA[{data.get('industry', {}).get('value', 'undisclosed')}]]></category>
               <salary><![CDATA[{data.get('baseSalary', {}).get('value', {}).get('value', 'undisclosed')}]]></salary>
               <email><![CDATA[joao.lima@smart-recruitments.com]]></email>
             </job>'''
