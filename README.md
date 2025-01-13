@@ -27,31 +27,6 @@ The script performs the following steps:
 
 ---
 
-## Installation and Usage
-
-### 1. Clone the Repository
-```bash
-git clone https://github.com/srdobolo/XML-Feed-From-jobPosting-Strutured-Data.git
-cd XML-Feed-From-jobPosting-Strutured-Data
-```
-
-### 2. Set Up Environment
-
-#### Install Python Dependencies
-```bash
-pip install -r requirements.txt
-```
-
-### 3. Run the Script
-
-To manually generate the XML feed:
-```bash
-python main.py
-```
-The generated XML file will be saved as `feed.xml` in the repository root.
-
----
-
 ## GitHub Actions Workflow
 
 The repository includes a GitHub Actions workflow to automate the generation and commit of the `feed.xml` file:
@@ -93,15 +68,6 @@ Modify the cron expression as needed.
 ├── .github/workflows    # GitHub Actions workflow configuration
 ├── README.md            # Project documentation
 ```
-
----
-
-## Contributing
-
-Contributions are welcome! To contribute:
-1. Fork the repository.
-2. Create a new branch for your feature or bug fix.
-3. Submit a pull request.
 
 ---
 
