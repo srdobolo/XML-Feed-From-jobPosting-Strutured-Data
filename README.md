@@ -1,6 +1,6 @@
 This repository is designed to generate an XML feed based on job posting structured data using a Python script. It automates the process of generating an XML file for job postings, ensuring compliance with structured data standards and facilitating integrations with third-party systems.
 
->> [XML Feed](https://github.smart-recruitments.com/feed.xml) <<
+[XML Feed](https://github.smart-recruitments.com/feed.xml)
 
 ## Overview
 
