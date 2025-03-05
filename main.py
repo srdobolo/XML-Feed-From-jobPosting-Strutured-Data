@@ -4,7 +4,7 @@ import json
 import html
 
 # Base URL for the find-jobs section
-base_url = 'https://smart-recruitments.com/find-jobs-all/'
+base_url = 'https://recruityard/find-jobs-all/'
 
 # Step 1: Load the main jobs page to find all job links
 response = requests.get(base_url)
@@ -20,8 +20,8 @@ job_links = list(set([a['href'] for a in soup.find_all('a', href=True) if '/find
 # Prepare the base of the RSS feed
 rss_feed = '''<?xml version="1.0" encoding="UTF-8"?>
 <source>
-    <publisher>SmartRecruitments</publisher>
-    <publisherurl>https://www.smart-recruitments.com</publisherurl>'''
+    <publisher>Recruityard</publisher>
+    <publisherurl>https://www.recruityard</publisherurl>'''
 
 # Step 3: Iterate over each job link, fetch its content, and extract the JSON
 for job_link in job_links:
@@ -66,7 +66,7 @@ for job_link in job_links:
               <jobtype><![CDATA[{data.get('employmentType', 'undisclosed')}]]></jobtype>
               <category><![CDATA[{data.get('industry', {}).get('value', 'undisclosed')}]]></category>
               <salary><![CDATA[{data.get('baseSalary', {}).get('value', {}).get('value', 'undisclosed')}]]></salary>
-              <email><![CDATA[joao.lima@smart-recruitments.com]]></email>
+              <email><![CDATA[joao@recruityard]]></email>
             </job>'''
 
         except json.JSONDecodeError:
