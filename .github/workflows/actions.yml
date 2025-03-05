@@ -2,54 +2,40 @@ name: run main.py
 
 on:
   schedule:
-    # This cron expression runs the workflow every 5 minutes
     - cron: '0 * * * *'
   workflow_dispatch:
 
 jobs:
   update-xml:
-    runs-on: ubuntu-latest  # Docker runs on a Linux environment
+    runs-on: ubuntu-latest
 
     steps:
-    # Checkout the repository
     - name: Checkout repository
       uses: actions/checkout@v3
       with:
-        fetch-depth: 0  # Fetch full history to avoid pull/rebase conflicts
-        clean: true     # Ensure a clean working directory
+        fetch-depth: 0
+        clean: true
 
-    # Set up Python
     - name: Setup Python
       uses: actions/setup-python@v4
       with:
         python-version: '3.8'
 
-    # Install dependencies
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
         pip install -r requirements.txt
 
-    # Run the Python script
     - name: Run Script
-      run: |
-        python main.py  # Ensure the script name is correct
+      run: python main.py
 
-    # Commit and push changes
     - name: Commit and push changes
       env:
-        TOKEN: ${{ secrets.GH_TOKEN }}  # Ensure GH_TOKEN is set as a repository secret
+        TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
-        # Configure Git
         git config --global user.name "GitHub Actions Bot"
         git config --global user.email "actions@github.com"
-
-        # Check for unstaged changes
         git add feed.xml
         git diff-index --quiet HEAD || git commit -m "Daily update of feed.xml"
-
-        # Pull the latest changes with rebase
         git pull origin main --rebase || git rebase --abort
-
-        # Push the changes
         git push https://x-access-token:${TOKEN}@github.com/srdobolo/XML-Feed-From-jobPosting-Strutured-Data.git
