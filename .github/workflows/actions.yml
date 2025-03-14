@@ -35,7 +35,7 @@ jobs:
       run: |
         git config --global user.name "GitHub Actions Bot"
         git config --global user.email "actions@github.com"
-        git add feed.xml jobatus.xml
+        git add feed.xml jobatus.xml # Add the files that have been changed
         git diff-index --quiet HEAD || git commit -m "Daily update of feed.xml"
         git pull origin main --rebase || git rebase --abort
         git push https://x-access-token:${TOKEN}@github.com/srdobolo/XML-Feed-From-jobPosting-Strutured-Data.git
