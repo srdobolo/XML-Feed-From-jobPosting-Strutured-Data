@@ -2,6 +2,8 @@ This repository is designed to generate an XML feed based on job posting structu
 
 [XML Feed](https://feed.recruityard.com/feed.xml)
 
+[Jobatus](https://feed.recruityard.com/jobatus.xml)
+
 ## Overview
 
 The script performs the following steps:
