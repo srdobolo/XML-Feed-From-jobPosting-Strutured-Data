@@ -1,6 +1,7 @@
 This repository is designed to generate an XML feed based on job posting structured data using a Python script. It automates the process of generating an XML file for job postings, ensuring compliance with structured data standards and facilitating integrations with third-party systems.
 
 [XML Feed](https://feed.recruityard.com/feed.xml)
+
 [Jobatus](https://feed.recruityard.com/jobatus.xml)
 
 ## Overview
