@@ -51,7 +51,7 @@ def generate_feed1():
               <jobtype><![CDATA[{data.get('employmentType', 'undisclosed')}]]></jobtype>
               <category><![CDATA[{data.get('industry', {}).get('value', 'undisclosed')}]]></category>
               <salary><![CDATA[{data.get('baseSalary', {}).get('value', {}).get('value', 'undisclosed')}]]></salary>
-              <email><![CDATA[joao@recruityard.com]]></email>
+              <email><![CDATA[info@recruityard.com]]></email>
             </job>'''
             except json.JSONDecodeError:
                 print(f"Error decoding JSON from {job_url}")
