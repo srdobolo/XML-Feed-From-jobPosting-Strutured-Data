@@ -20,7 +20,7 @@ def generate_feed3():
     <rss>
         <channel>
             <title>Recruityard</title>
-            <link>https://.recruityard.com</link>
+            <link>https://www.recruityard.com</link>
             <description>Recruityard - Current Job Openings</description>'''
 
     # Iterate over each job link, fetch its content, and extract the JSON
