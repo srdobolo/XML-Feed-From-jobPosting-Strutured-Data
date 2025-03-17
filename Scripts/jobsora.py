@@ -2,7 +2,6 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import html
-import os
 
 def generate_feed4():
     # Base URL for the find-jobs section
@@ -58,7 +57,7 @@ def generate_feed4():
 </jobs>'''
 
     # Save the feed to a file
-    with open('Jobsora.xml', 'w', encoding='utf-8') as f:
+    with open('jobsora.xml', 'w', encoding='utf-8') as f:
         f.write(rss_feed)
     print("Generated rss.xml")
 
