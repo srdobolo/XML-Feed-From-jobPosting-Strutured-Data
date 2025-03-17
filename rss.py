@@ -16,7 +16,8 @@ def generate_feed3():
     job_links = list(set([a['href'] for a in soup.find_all('a', href=True) if '/find-jobs-all/' in a['href']]))
 
     # Prepare the base of the RSS feed
-    rss_feed = '''<rss>
+    rss_feed = '''
+    <rss>
         <channel>
             <title>Recruityard</title>
             <link>https://.recruityard.com</link>
