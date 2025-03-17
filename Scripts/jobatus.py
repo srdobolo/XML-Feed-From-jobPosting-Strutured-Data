@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import html
+import os
 
 def generate_feed2():
     # Base URL for the find-jobs section
