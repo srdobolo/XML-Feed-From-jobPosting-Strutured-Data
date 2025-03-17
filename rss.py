@@ -57,4 +57,4 @@ def generate_feed3():
     print("Generated rss.xml")
 
 if __name__ == "__main__":
-    generate_feed2()
+    generate_feed3()
