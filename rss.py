@@ -17,7 +17,10 @@ def generate_feed3():
 
     # Prepare the base of the RSS feed
     rss_feed = '''<rss>
-        <channel>'''
+        <channel>
+            <title>Recruityard</title>
+            <link>https://.recruityard.com</link>
+            <description>Recruityard - Current Job Openings</description>'''
 
     # Iterate over each job link, fetch its content, and extract the JSON
     for job_link in job_links:
@@ -32,10 +35,7 @@ def generate_feed3():
             json_content = html.unescape(script_tag.string)
             try:
                 data = json.loads(json_content)
-                rss_feed += f'''
-            <title>Recruityard Job Feed</title>
-            <link>https://feed.recruityard.com</link>
-            <description>Latest jobs from Recruityard</description>    
+                rss_feed += f'''  
             <item>
               <title><![CDATA[{data.get('title', 'undisclosed')}]]></title>
               <link><![CDATA[{job_url}]]></link>  
