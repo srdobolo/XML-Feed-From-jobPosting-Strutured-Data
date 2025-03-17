@@ -1,6 +1,6 @@
-from feed import generate_feed1
-from jobatus import generate_feed2
-from rss import generate_feed3
+from Scripts.feed import generate_feed1
+from Scripts.jobatus import generate_feed2
+from Scripts.rss import generate_feed3
 
 def main():
     print("Starting RSS feed generation...")
