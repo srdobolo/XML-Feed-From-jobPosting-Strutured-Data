@@ -52,7 +52,7 @@ def generate_feed2():
 </jobatus>'''
 
     # Save to folder
-    folder_path = "job_feeds" 
+    folder_path = "Feeds" 
     os.makedirs(folder_path, exist_ok=True)
     file_path = os.path.join(folder_path, 'jobatus.xml')
     with open(file_path, 'w', encoding='utf-8') as f:
