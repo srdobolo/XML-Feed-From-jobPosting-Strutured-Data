@@ -17,7 +17,7 @@ def generate_feed2():
 
     # Prepare the base of the RSS feed
     rss_feed = '''<rss>
-<channel>'''
+        <channel>'''
 
     # Iterate over each job link, fetch its content, and extract the JSON
     for job_link in job_links:
@@ -47,7 +47,7 @@ def generate_feed2():
 
     # Close the RSS feed
     rss_feed += '''
-</channel>
+    </channel>
 </rss>
 '''
 
