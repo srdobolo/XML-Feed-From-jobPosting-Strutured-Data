@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import json
 import html
 
-def generate_feed2():
+def generate_feed3():
     # Base URL for the find-jobs section
     base_url = 'https://recruityard.com/find-jobs-all/'
 
