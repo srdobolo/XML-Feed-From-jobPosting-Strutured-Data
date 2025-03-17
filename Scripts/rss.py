@@ -2,7 +2,6 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import html
-import os
 
 def generate_feed3():
     # Base URL for the find-jobs section
@@ -53,13 +52,10 @@ def generate_feed3():
 </rss>
 '''
 
-    # Save to folder
-    folder_path = "Feeds" 
-    os.makedirs(folder_path, exist_ok=True)
-    file_path = os.path.join(folder_path, 'rss.xml')
-    with open(file_path, 'w', encoding='utf-8') as f:
+    # Save the feed to a file
+    with open('rss.xml', 'w', encoding='utf-8') as f:
         f.write(rss_feed)
-    print(f"Generated {file_path}")
+    print("Generated rss.xml")
 
 if __name__ == "__main__":
     generate_feed3()
