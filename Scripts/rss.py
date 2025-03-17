@@ -52,10 +52,13 @@ def generate_feed3():
 </rss>
 '''
 
-    # Save the feed to a file
-    with open('rss.xml', 'w', encoding='utf-8') as f:
+    # Save to folder
+    folder_path = "job_feeds" 
+    os.makedirs(folder_path, exist_ok=True)
+    file_path = os.path.join(folder_path, 'rss.xml')
+    with open(file_path, 'w', encoding='utf-8') as f:
         f.write(rss_feed)
-    print("Generated rss.xml")
+    print(f"Generated {file_path}")
 
 if __name__ == "__main__":
     generate_feed3()

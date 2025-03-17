@@ -50,10 +50,13 @@ def generate_feed2():
     rss_feed += '''
 </jobatus>'''
 
-    # Save the feed to a file
-    with open('jobatus.xml', 'w', encoding='utf-8') as f:
+    # Save to folder
+    folder_path = "job_feeds" 
+    os.makedirs(folder_path, exist_ok=True)
+    file_path = os.path.join(folder_path, 'jobatus.xml')
+    with open(file_path, 'w', encoding='utf-8') as f:
         f.write(rss_feed)
-    print("Generated jobatus.xml")
+    print(f"Generated {file_path}")
 
 if __name__ == "__main__":
     generate_feed2()
