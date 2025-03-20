@@ -59,7 +59,7 @@ def generate_feed4():
     # Save the feed to a file
     with open('jobsora.xml', 'w', encoding='utf-8') as f:
         f.write(rss_feed)
-    print("Generated rss.xml")
+    print("Generated jobsora.xml")
 
 if __name__ == "__main__":
     generate_feed4()

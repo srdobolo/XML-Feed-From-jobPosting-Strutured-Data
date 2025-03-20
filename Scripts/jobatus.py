@@ -13,7 +13,7 @@ def generate_feed2():
 
     # Parse the HTML with BeautifulSoup to find all job links
     soup = BeautifulSoup(html_content, 'html.parser')
-    job_links = list(set([a['href'] for a in soup.find_all('a', href=True) if '/find-jobs-all/' in a['href']]))
+    job_links = list(set([a['href'] for a in soup.find_all('a', href=True) if '/find-jobs-all/' in a['href'] and a['href'].endswith('pt')]))
 
     # Prepare the base of the RSS feed
     rss_feed = '''<?xml version="1.0" encoding="UTF-8"?>
@@ -53,7 +53,7 @@ def generate_feed2():
     # Save the feed to a file
     with open('Jobatus.xml', 'w', encoding='utf-8') as f:
         f.write(rss_feed)
-    print("Generated rss.xml")
+    print("Generated jobatus.xml")
 
 if __name__ == "__main__":
     generate_feed2()
