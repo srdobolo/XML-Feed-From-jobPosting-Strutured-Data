@@ -1,14 +1,14 @@
-from Scripts.feed import generate_feed1
-from Scripts.jobatus import generate_feed2
-from Scripts.rss import generate_feed3
-from Scripts.jobsora import generate_feed4
+from Scripts.feed import feed
+from Scripts.jobatus import jobatus
+from Scripts.rss import rss
+from Scripts.jobsora import jobsora
 
 def main():
     print("Starting RSS feed generation...")
-    generate_feed1()
-    generate_feed2()
-    generate_feed3()
-    generate_feed4()
+    feed()
+    jobatus()
+    rss()
+    jobsora()
     print("RSS feed generation complete.")
 
 if __name__ == "__main__":

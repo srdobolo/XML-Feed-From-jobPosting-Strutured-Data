@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import json
 import html
 
-def generate_feed3():
+def rss():
     # Base URL for the find-jobs section
     base_url = 'https://recruityard.com/find-jobs-all/'
 
@@ -58,4 +58,4 @@ def generate_feed3():
     print("Generated rss.xml")
 
 if __name__ == "__main__":
-    generate_feed3()
+    rss()

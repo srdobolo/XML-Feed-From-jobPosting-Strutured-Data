@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import json
 import html
 
-def generate_feed4():
+def jobsora():
     # Base URL for the find-jobs section
     base_url = 'https://recruityard.com/find-jobs-all/'
 
@@ -62,4 +62,4 @@ def generate_feed4():
     print("Generated jobsora.xml")
 
 if __name__ == "__main__":
-    generate_feed4()
+    jobsora()
