@@ -41,7 +41,7 @@ def jooble():
               <salary><![CDATA[{data.get('baseSalary', {}).get('value', {}).get('value', 'undisclosed')}]]></salary>
               <description><![CDATA[{data.get('description', 'undisclosed')}]]></description>
               <company><![CDATA[Recruityard]]></company>
-              <company_logo><![CDATA[                                     ]]></company_logo>
+              <company_logo><![CDATA[https://framerusercontent.com/images/FiQxGZ2DDim6z4ENGAhbwOTU8E.png?scale-down-to=15]]></company_logo>
               <pubdate><![CDATA[{data.get('datePosted', 'undisclosed')}]]></pubdate>
               <updated><![CDATA[{datetime.datetime.now()}]]></updated>
               <expire><![CDATA[{data.get('validThrough', 'undisclosed')}]]></expire>
