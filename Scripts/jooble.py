@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import json
 import html
+import datetime
 
 def jooble():
     # Base URL for the find-jobs section
@@ -42,7 +43,7 @@ def jooble():
               <company><![CDATA[Recruityard]]></company>
               <company_logo><![CDATA[                                     ]]></company_logo>
               <pubdate><![CDATA[{data.get('datePosted', 'undisclosed')}]]></pubdate>
-              <updated><![CDATA[{data.get('dateModified', 'undisclosed')}]]></updated>
+              <updated><![CDATA[{datetime.datetime.now()}]]></updated>
               <expire><![CDATA[{data.get('validThrough', 'undisclosed')}]]></expire>
               <jobtype><![CDATA[{data.get('employmentType', 'undisclosed')}]]></jobtype>
               <email><![CDATA[info@recruityard.com]]></email>        
