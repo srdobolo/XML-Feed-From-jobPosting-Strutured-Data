@@ -49,30 +49,12 @@ def jora():
               <description><![CDATA[{data.get('description', 'undisclosed')}]]></description>
               <salary>
                 <type>Monthly</type>
-                <min> XXX </min>
-                <max> XXX </max>
+                <min> XXX </min>        #arranjasr isto
+                <max> XXX </max>        #arranjar isto    
                 <currency><![CDATA[{data.get('baseSalary', {}).get('currency', 'undisclosed')}]]></currency>
-
-
-                
-                
-                <![CDATA[{data.get('baseSalary', {}).get('value', {}).get('value', 'undisclosed')}]]></salary>
-
-              <date><![CDATA[{data.get('datePosted', 'undisclosed')}]]></date>
-              <referencenumber><![CDATA[{data.get('identifier', {}).get('value', 'undisclosed')}]]></referencenumber>
+              </salary>
+              <jobtype><![CDATA[{data.get('employmentType', 'undisclosed')}]]></jobtype>        #arranjar isto
               <url><![CDATA[{job_url}]]></url>
-              
-              
-              <city><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressLocality', 'undisclosed')}]]></city>
-              <state><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressRegion', 'undisclosed')}]]></state>
-              <country><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressCountry', 'undisclosed')}]]></country>
-              <remote><![CDATA[{data.get('jobLocationType', 'WFO')}]]></remote>
-              
-              
-              <jobtype><![CDATA[{data.get('employmentType', 'undisclosed')}]]></jobtype>
-              <category><![CDATA[{data.get('industry', {}).get('value', 'undisclosed')}]]></category>
-              
-              <email><![CDATA[info@recruityard.com]]></email>
             </job>'''
             except json.JSONDecodeError:
                 print(f"Error decoding JSON from {job_url}")
