@@ -49,11 +49,11 @@ def jora():
               <description><![CDATA[{data.get('description', 'undisclosed')}]]></description>
               <salary>
                 <type>Monthly</type>
-                <min> XXX </min>        #arranjasr isto
-                <max> XXX </max>        #arranjar isto    
+                <min> XXX </min>                                                                                        #arranjasr isto
+                <max> XXX </max>                                                                                        #arranjar isto    
                 <currency><![CDATA[{data.get('baseSalary', {}).get('currency', 'undisclosed')}]]></currency>
               </salary>
-              <jobtype><![CDATA[{data.get('employmentType', 'undisclosed')}]]></jobtype>        #arranjar isto
+              <jobtype><![CDATA[{data.get('employmentType', 'undisclosed')}]]></jobtype>                                #arranjar isto
               <url><![CDATA[{job_url}]]></url>
             </job>'''
             except json.JSONDecodeError:
