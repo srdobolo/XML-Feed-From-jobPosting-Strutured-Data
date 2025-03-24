@@ -53,11 +53,25 @@ def jora():
                 min_salary = 'undisclosed'
                 max_salary = 'undisclosed'
 
-                # Process salary if it's a string and contains numbers
-                if isinstance(salary_value, (str, int, float)) and str(salary_value).replace('.', '').isdigit():
-                    salary_str = str(salary_value)
-                    min_salary = salary_str[:4] if len(salary_str) >= 4 else salary_str
-                    max_salary = salary_str[-5:] if len(salary_str) > 4 else salary_str[-4:]
+                # Process salary if it's a string
+                if isinstance(salary_value, str):
+                    # Handle range format like "1050 - 1300"
+                    if '-' in salary_value:
+                        salary_parts = [part.strip() for part in salary_value.split('-')]
+                        if len(salary_parts) == 2:
+                            # Check if both parts are valid numbers
+                            if (salary_parts[0].replace('.', '').isdigit() and 
+                                salary_parts[1].replace('.', '').isdigit()):
+                                min_salary = salary_parts[0]
+                                max_salary = salary_parts[1]
+                    # Handle single value
+                    elif salary_value.replace('.', '').isdigit():
+                        min_salary = salary_value
+                        max_salary = salary_value
+                elif isinstance(salary_value, (int, float)):
+                    # Handle numeric values
+                    min_salary = str(salary_value)
+                    max_salary = str(salary_value)
 
                 # Map employment type
                 raw_employment_type = data.get('employmentType', 'undisclosed')
@@ -68,24 +82,24 @@ def jora():
 
                 rss_feed += f'''
             <job>
-              <title><![CDATA[{data.get('title', 'undisclosed')}]]></title>
-              <id><![CDATA[{data.get('identifier', {}).get('value', 'undisclosed')}]]></id>
-              <listed_date><![CDATA[{data.get('datePosted', 'undisclosed')}]]></listed_date>
-              <closing_date><![CDATA[{data.get('validThrough', 'undisclosed')}]]></closing_date>
-              <location><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressLocality', 'undisclosed')}]]></location>
-              <city><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressLocality', 'undisclosed')}]]></city>
-              <state><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressRegion', 'undisclosed')}]]></state>
-              <postalcode><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('postalCode', 'undisclosed')}]]></postalcode>
-              <country><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressCountry', 'undisclosed')}]]></country>
-              <description><![CDATA[{data.get('description', 'undisclosed')}]]></description>
+              <title><![CDATA[ {data.get('title', 'undisclosed')} ]]></title>
+              <id><![CDATA[ {data.get('identifier', {}).get('value', 'undisclosed')} ]]></id>
+              <listed_date><![CDATA[ {data.get('datePosted', 'undisclosed')} ]]></listed_date>
+              <closing_date><![CDATA[ {data.get('validThrough', 'undisclosed')} ]]></closing_date>
+              <location><![CDATA[ {data.get('jobLocation', {}).get('address', {}).get('addressLocality', 'undisclosed')} ]]></location>
+              <city><![CDATA[ {data.get('jobLocation', {}).get('address', {}).get('addressLocality', 'undisclosed')} ]]></city>
+              <state><![CDATA[ {data.get('jobLocation', {}).get('address', {}).get('addressRegion', 'undisclosed')} ]]></state>
+              <postalcode>{data.get('jobLocation', {}).get('address', {}).get('postalCode', 'undisclosed')}</postalcode>
+              <country><![CDATA[ {data.get('jobLocation', {}).get('address', {}).get('addressCountry', 'undisclosed')} ]]></country>
+              <description><![CDATA[ {data.get('description', 'undisclosed')} ]]></description>
               <salary>
                 <type>Monthly</type>
-                <min><![CDATA[{min_salary}]]></min>
-                <max><![CDATA[{max_salary}]]></max>
-                <currency><![CDATA[{data.get('baseSalary', {}).get('currency', 'undisclosed')}]]></currency>
+                <min>{min_salary}</min>
+                <max>{max_salary}</max>
+                <currency>{data.get('baseSalary', {}).get('currency', 'undisclosed')}</currency>
               </salary>
-              <jobtype><![CDATA[{employment_type}]]></jobtype>
-              <url><![CDATA[{job_url}]]></url>
+              <jobtype><![CDATA[ {employment_type} ]]></jobtype>
+              <url><![CDATA[ {job_url} ]]></url>
             </job>'''
             except json.JSONDecodeError:
                 print(f"Error decoding JSON from {job_url}")
