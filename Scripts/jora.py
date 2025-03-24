@@ -64,9 +64,9 @@ def jora():
 </source>'''
 
     # Save the feed to a file
-    with open('jobisjob.xml', 'w', encoding='utf-8') as f:
+    with open('jora.xml', 'w', encoding='utf-8') as f:
         f.write(rss_feed)
-    print("Generated jobisjob.xml")
+    print("Generated jora.xml")
 
 if __name__ == "__main__":
     jora()
