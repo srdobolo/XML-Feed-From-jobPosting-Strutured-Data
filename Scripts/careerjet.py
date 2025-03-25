@@ -33,7 +33,7 @@ def careerjet():
             try:
                 data = json.loads(json_content)
                 rss_feed += f'''
-            <job 
+            <job> 
               <id><![CDATA[{data.get('identifier', {}).get('value', 'undisclosed')}]]></id>
               <title><![CDATA[{data.get('title', 'undisclosed')}]]></title>
               <url><![CDATA[{job_url}]]></url>
