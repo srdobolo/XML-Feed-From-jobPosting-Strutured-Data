@@ -5,6 +5,7 @@ from Scripts.jobsora import jobsora
 from Scripts.jooble import jooble
 from Scripts.jobrapido import jobrapido
 from Scripts.jora import jora
+from Scripts.careerjet import careerjet
 
 def main():
     print("Starting RSS feed generation...")
@@ -15,6 +16,7 @@ def main():
     jooble()
     jobrapido()
     jora()
+    careerjet()
     print("RSS feed generation complete.")
 
 if __name__ == "__main__":
