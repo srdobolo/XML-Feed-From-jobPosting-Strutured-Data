@@ -90,7 +90,7 @@ def talentcom():
               <country><![CDATA[ {data.get('jobLocation', {}).get('address', {}).get('addressCountry', 'undisclosed')} ]]></country>
               <dateposted><![CDATA[ {data.get('datePosted', 'undisclosed')} ]]></dateposted>
               <expirationdate><![CDATA[ {data.get('validThrough', 'undisclosed')} ]]></expirationdate>
-              <referencenumber><![CDATA[ {data.get('referencenumberentifier', {}).get('value', 'undisclosed')} ]]></referencenumber>
+              <referencenumber><![CDATA[ {data.get('identifier', {}).get('value', 'undisclosed')} ]]></referencenumber>
               <url><![CDATA[ {job_url}?id={data.get('identifier', {}).get('value', 'undisclosed')}&utm_source=TALENT_COM ]]></url>
               <description><![CDATA[ {data.get('description', 'undisclosed')} ]]></description>
               <salary>
