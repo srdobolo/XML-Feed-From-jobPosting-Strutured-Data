@@ -48,7 +48,7 @@ def careerjet():
               <contract_type><![CDATA[permanent]]></contract_type>
               <working_hours><![CDATA[{data.get('employmentType', 'undisclosed')}]]></working_hours>
               <salary><![CDATA[{data.get('baseSalary', {}).get('value', {}).get('value', 'undisclosed')}]]></salary>
-              <application_email><![CDATA[info@recruityard.com]]></email>
+              <application_email><![CDATA[info@recruityard.com]]></application_email>
               <apply_url><![CDATA[{job_url}]]></apply_url>
             </job>'''
             except json.JSONDecodeError:
