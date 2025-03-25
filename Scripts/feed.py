@@ -45,7 +45,7 @@ def feed():
               <city><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressLocality', 'undisclosed')}]]></city>
               <state><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressRegion', 'undisclosed')}]]></state>
               <country><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressCountry', 'undisclosed')}]]></country>
-              <remote><![CDATA[{data.get('jobLocationType', 'WFO')}]]></remote>
+              <remote><![CDATA[ {'yes' if data.get('jobLocationType') == 'TELECOMMUTE' else 'no'} ]]></remote>
               <postalcode><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('postalCode', 'undisclosed')}]]></postalcode>
               <description><![CDATA[{data.get('description', 'undisclosed')}]]></description>
               <jobtype><![CDATA[{data.get('employmentType', 'undisclosed')}]]></jobtype>
