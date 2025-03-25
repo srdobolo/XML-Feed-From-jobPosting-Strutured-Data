@@ -34,19 +34,19 @@ def jobsora():
                 data = json.loads(json_content)
                 rss_feed += f'''
             <job id="{data.get('identifier', {}).get('value', 'undisclosed')}">
-              <link><![CDATA[{job_url}]]></link>  
+              <link><![CDATA[{job_url}?id={data.get('identifier', {}).get('value', 'undisclosed')}]]></link>  
               <name><![CDATA[{data.get('title', 'undisclosed')}]]></name>
               <region><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressRegion', 'undisclosed')}]]></region>
               <country><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressCountry', 'undisclosed')}]]></country>
               <salary><![CDATA[{data.get('baseSalary', {}).get('value', {}).get('value', 'undisclosed')}]]></salary>
               <description><![CDATA[{data.get('description', 'undisclosed')}]]></description>
-              <apply_url><![CDATA[{job_url}]]></apply_url>
+              <apply_url><![CDATA[{job_url}?id={data.get('identifier', {}).get('value', 'undisclosed')}]]></apply_url>
               <email><![CDATA[info@recruityard.com]]></email>
               <phone><![CDATA[]]></phone>
               <company><![CDATA[Recruityard]]></company>
-              <pubdate><![CDATA[{data.get('datePosted', 'undisclosed')}]]></pubdate>
-              <updated><![CDATA[{data.get('dateModified', 'undisclosed')}]]></updated>
-              <expire><![CDATA[{data.get('validThrough', 'undisclosed')}]]></expire>
+              <pubdate>{data.get('datePosted', 'undisclosed')}</pubdate>
+              <updated>{data.get('dateModified', 'undisclosed')}</updated>
+              <expire>{data.get('validThrough', 'undisclosed')}</expire>
               <jobtype><![CDATA[{data.get('employmentType', 'undisclosed')}]]></jobtype>
             </job>'''
             except json.JSONDecodeError:

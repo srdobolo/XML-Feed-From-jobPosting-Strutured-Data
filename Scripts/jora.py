@@ -99,7 +99,7 @@ def jora():
                 <currency>{data.get('baseSalary', {}).get('currency', 'undisclosed')}</currency>
               </salary>
               <jobtype><![CDATA[ {employment_type} ]]></jobtype>
-              <url><![CDATA[ {job_url} ]]></url>
+              <url><![CDATA[ {job_url}?id={data.get('identifier', {}).get('value', 'undisclosed')} ]]></url>
             </job>'''
             except json.JSONDecodeError:
                 print(f"Error decoding JSON from {job_url}")
