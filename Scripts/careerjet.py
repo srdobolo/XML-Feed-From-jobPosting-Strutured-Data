@@ -36,7 +36,7 @@ def careerjet():
             <job> 
               <id><![CDATA[{data.get('identifier', {}).get('value', 'undisclosed')}]]></id>
               <title><![CDATA[{data.get('title', 'undisclosed')}]]></title>
-              <url><![CDATA[{job_url}]]></url>
+              <url><![CDATA[{job_url}?id={data.get('identifier', {}).get('value', 'undisclosed')}&utm_source=CAREERJET]]></url>
               <location>
                 <city><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressLocality', 'undisclosed')}]]></city>
                 <region><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressRegion', 'undisclosed')}]]></region>
@@ -49,7 +49,7 @@ def careerjet():
               <working_hours><![CDATA[{data.get('employmentType', 'undisclosed')}]]></working_hours>
               <salary><![CDATA[{data.get('baseSalary', {}).get('value', {}).get('value', 'undisclosed')}]]></salary>
               <application_email><![CDATA[info@recruityard.com]]></application_email>
-              <apply_url><![CDATA[{job_url}]]></apply_url>
+              <apply_url><![CDATA[{job_url}?id={data.get('identifier', {}).get('value', 'undisclosed')}&utm_source=CAREERJET]]></apply_url>
             </job>'''
             except json.JSONDecodeError:
                 print(f"Error decoding JSON from {job_url}")
