@@ -51,7 +51,7 @@ def jobatus():
 </jobatus>'''
 
     # Save the feed to a file
-    with open('Jobatus.xml', 'w', encoding='utf-8') as f:
+    with open('jobatus.xml', 'w', encoding='utf-8') as f:
         f.write(rss_feed)
     print("Generated jobatus.xml")
 
