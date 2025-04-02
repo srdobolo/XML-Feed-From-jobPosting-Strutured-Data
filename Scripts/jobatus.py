@@ -1,7 +1,29 @@
 import requests
+from requests.adapters import HTTPAdapter
+from urllib3.util.retry import Retry
 from bs4 import BeautifulSoup
 import json
 import html
+import logging
+
+# Shared session setup (could be moved to a utils module)
+def create_resilient_session():
+    session = requests.Session()
+    retries = Retry(total=3, backoff_factor=1, status_forcelist=[500, 502, 503, 504, 104])
+    adapter = HTTPAdapter(max_retries=retries)
+    session.mount("http://", adapter)
+    session.mount("https://", adapter)
+    return session
+
+def fetch_url(session, url, timeout=10):
+    try:
+        response = session.get(url, timeout=timeout)
+        response.raise_for_status()
+        logging.info("Successfully fetched %s", url)
+        return response.content
+    except requests.exceptions.RequestException as e:
+        logging.error("Failed to fetch %s: %s", url, e)
+        raise
 
 def jobatus():
     # Base URL for the find-jobs section
