@@ -80,6 +80,7 @@ def jooble():
               <link><![CDATA[{job_url}?id={data.get('identifier', {}).get('value', 'undisclosed')}]]></link>  
               <name><![CDATA[{data.get('title', 'undisclosed')}]]></name>
               <region><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressRegion', 'undisclosed')}]]></region>
+              <country><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressCountry', 'undisclosed')}]]></country>
               <salary><![CDATA[{data.get('baseSalary', {}).get('value', {}).get('value', 'undisclosed')}]]></salary>
               <description><![CDATA[{data.get('description', 'undisclosed')}]]></description>
               <company><![CDATA[Recruityard]]></company>
