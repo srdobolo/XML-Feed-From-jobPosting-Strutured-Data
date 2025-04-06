@@ -6,10 +6,18 @@ import json
 import html
 import logging
 
-# Shared session setup (could be moved to a utils module)
+# Set up logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+
+# Shared session setup
 def create_resilient_session():
     session = requests.Session()
-    retries = Retry(total=3, backoff_factor=1, status_forcelist=[500, 502, 503, 504, 104])
+    retries = Retry(
+        total=3,  # Retry 3 times
+        backoff_factor=1,  # Wait 1, 2, 4 seconds between retries
+        status_forcelist=[500, 502, 503, 504],  # Retry on server errors
+        allowed_methods=["GET"]
+    )
     adapter = HTTPAdapter(max_retries=retries)
     session.mount("http://", adapter)
     session.mount("https://", adapter)
@@ -25,17 +33,24 @@ def fetch_url(session, url, timeout=10):
         logging.error("Failed to fetch %s: %s", url, e)
         raise
 
-def jobatus():
+def jobatus(session=None):
+    if session is None:
+        session = create_resilient_session()
+
     # Base URL for the find-jobs section
     base_url = 'https://recruityard.com/find-jobs-all/'
 
     # Load the main jobs page to find all job links
-    response = requests.get(base_url)
-    html_content = response.content
+    try:
+        html_content = fetch_url(session, base_url)
+    except requests.exceptions.RequestException:
+        logging.error("Failed to load base URL, aborting jobatus feed generation.")
+        return  # Exit early if the base page can’t be loaded
 
     # Parse the HTML with BeautifulSoup to find all job links
     soup = BeautifulSoup(html_content, 'html.parser')
-    job_links = list(set([a['href'] for a in soup.find_all('a', href=True) if '/find-jobs-all/' in a['href'] and a['href'].endswith('pt')]))
+    job_links = list(set([a['href'] for a in soup.find_all('a', href=True) 
+                          if '/find-jobs-all/' in a['href'] and a['href'].endswith('pt')]))
 
     # Prepare the base of the RSS feed
     rss_feed = '''<?xml version="1.0" encoding="UTF-8"?>
@@ -44,17 +59,16 @@ def jobatus():
     # Iterate over each job link, fetch its content, and extract the JSON
     for job_link in job_links:
         job_url = base_url + job_link.split('/')[-1]
-        response = requests.get(job_url)
-        job_html_content = response.content
+        try:
+            job_html_content = fetch_url(session, job_url)
+            job_soup = BeautifulSoup(job_html_content, 'html.parser')
+            script_tag = job_soup.find('script', type='application/ld+json')
 
-        job_soup = BeautifulSoup(job_html_content, 'html.parser')
-        script_tag = job_soup.find('script', type='application/ld+json')
-
-        if script_tag and script_tag.string:
-            json_content = html.unescape(script_tag.string)
-            try:
-                data = json.loads(json_content)
-                rss_feed += f'''
+            if script_tag and script_tag.string:
+                json_content = html.unescape(script_tag.string)
+                try:
+                    data = json.loads(json_content)
+                    rss_feed += f'''
             <ad>
               <url><![CDATA[{job_url}?id={data.get('identifier', {}).get('value', 'undisclosed')}]]></url>  
               <title><![CDATA[{data.get('title', 'undisclosed')}]]></title>
@@ -65,17 +79,23 @@ def jobatus():
               <city><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressLocality', 'undisclosed')}]]></city>
               <region><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressRegion', 'undisclosed')}]]></region>
             </ad>'''
-            except json.JSONDecodeError:
-                print(f"Error decoding JSON from {job_url}")
+                except json.JSONDecodeError:
+                    logging.error("Error decoding JSON from %s", job_url)
+        except requests.exceptions.RequestException:
+            logging.warning("Skipping job link %s due to fetch error", job_url)
+            continue  # Skip this job link and move to the next one
 
     # Close the RSS feed
     rss_feed += '''
 </jobatus>'''
 
     # Save the feed to a file
-    with open('jobatus.xml', 'w', encoding='utf-8') as f:
-        f.write(rss_feed)
-    print("Generated jobatus.xml")
+    try:
+        with open('jobatus.xml', 'w', encoding='utf-8') as f:
+            f.write(rss_feed)
+        logging.info("Generated jobatus.xml")
+    except IOError as e:
+        logging.error("Failed to write jobatus.xml: %s", e)
 
 if __name__ == "__main__":
     jobatus()
