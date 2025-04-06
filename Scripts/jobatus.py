@@ -74,10 +74,17 @@ def jobatus(session=None):
               <title><![CDATA[{data.get('title', 'undisclosed')}]]></title>
               <content><![CDATA[{data.get('description', 'undisclosed')}]]></content>
               <company><![CDATA[Recruityard]]></company>
-              <contract><![CDATA[{data.get('employmentType', 'undisclosed')}]]></contract>
+              <contract><![CDATA[{'Efetivo, tempo inteiro' 
+                                  if data.get('employmentType', 'undisclosed') == 'FULL_TIME' else 'Efetivo, tempo parcial'
+                                  if data.get('employmentType', 'undisclosed') == 'PART_TIME' 
+                                  else data.get('employmentType', 'undisclosed')}]]></contract>
               <salary><![CDATA[{data.get('baseSalary', {}).get('value', {}).get('value', 'undisclosed')}]]></salary>
-              <city><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressLocality', 'undisclosed')}]]></city>
-              <region><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressRegion', 'undisclosed')}]]></region>
+              <city><![CDATA[{'Lisboa' 
+                              if data.get('jobLocation', {}).get('address', {}).get('addressLocality', 'undisclosed') == 'Lisbon' 
+                              else data.get('jobLocation', {}).get('address', {}).get('addressLocality', 'undisclosed')}]]></city>
+              <region><![CDATA[{'Lisboa' 
+                                if data.get('jobLocation', {}).get('address', {}).get('addressRegion', 'undisclosed') == 'Lisbon' 
+                                else data.get('jobLocation', {}).get('address', {}).get('addressRegion', 'undisclosed')}]]></region>
             </ad>'''
                 except json.JSONDecodeError:
                     logging.error("Error decoding JSON from %s", job_url)
