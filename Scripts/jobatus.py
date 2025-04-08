@@ -5,17 +5,20 @@ from bs4 import BeautifulSoup
 import json
 import html
 import logging
+import time
 
 # Set up logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-# Shared session setup
+# Shared session setup with enhanced retry logic
 def create_resilient_session():
     session = requests.Session()
     retries = Retry(
         total=3,  # Retry 3 times
         backoff_factor=1,  # Wait 1, 2, 4 seconds between retries
         status_forcelist=[500, 502, 503, 504],  # Retry on server errors
+        connect=3,  # Retry on connection errors (e.g., ConnectionResetError)
+        read=3,  # Retry on read errors
         allowed_methods=["GET"]
     )
     adapter = HTTPAdapter(max_retries=retries)
@@ -29,8 +32,14 @@ def fetch_url(session, url, timeout=10):
         response.raise_for_status()
         logging.info("Successfully fetched %s", url)
         return response.content
+    except requests.exceptions.ConnectionError as e:
+        logging.error("Connection error for %s: %s", url, e)
+        raise
+    except requests.exceptions.Timeout as e:
+        logging.error("Timeout error for %s: %s", url, e)
+        raise
     except requests.exceptions.RequestException as e:
-        logging.error("Failed to fetch %s: %s", url, e)
+        logging.error("General request error for %s: %s", url, e)
         raise
 
 def jobatus(session=None):
@@ -91,6 +100,9 @@ def jobatus(session=None):
         except requests.exceptions.RequestException:
             logging.warning("Skipping job link %s due to fetch error", job_url)
             continue  # Skip this job link and move to the next one
+        
+        # Add a small delay to avoid overwhelming the server
+        time.sleep(1)  # 1-second delay between requests
 
     # Close the RSS feed
     rss_feed += '''
