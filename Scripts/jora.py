@@ -142,7 +142,7 @@ def jora():
                 <currency>{data.get('baseSalary', {}).get('currency', 'undisclosed')}</currency>
               </salary>
               <jobtype><![CDATA[{employment_type}]]></jobtype>
-              <url><![CDATA[{job_url}?id={data.get('identifier', {}).get('value', 'undisclosed')}]]></url>
+              <url><![CDATA[{job_url}]]></url>
             </job>'''
                     success_count += 1
                 except json.JSONDecodeError as e:

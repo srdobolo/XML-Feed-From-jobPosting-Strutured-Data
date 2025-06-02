@@ -98,7 +98,7 @@ def jooble():
 
                     rss_feed += f'''
             <job id="{data.get('identifier', {}).get('value', 'undisclosed')}">
-              <link><![CDATA[{job_url}?id={data.get('identifier', {}).get('value', 'undisclosed')}]]></link>  
+              <link><![CDATA[{job_url}]]></link>  
               <name><![CDATA[{data.get('title', 'undisclosed')}]]></name>
               <region><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressRegion', 'undisclosed')}]]></region>
               <country><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressCountry', 'undisclosed')}]]></country>

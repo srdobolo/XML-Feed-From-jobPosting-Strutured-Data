@@ -87,7 +87,7 @@ def jobrapido():
               <website><![CDATA[https://www.recruityard.com]]></website>
               <publishdate><![CDATA[{data.get('datePosted', 'undisclosed')}]]></publishdate>
               <expirydate><![CDATA[{data.get('validThrough', 'undisclosed')}]]></expirydate>
-              <url><![CDATA[{job_url}?id={data.get('identifier', {}).get('value', 'undisclosed')}]]></url>
+              <url><![CDATA[{job_url}]]></url>
               <email><![CDATA[info@recruityard.com]]></email>
               <description><![CDATA[{data.get('description', 'undisclosed')}]]></description>
               <reference_id><![CDATA[{data.get('identifier', {}).get('value', 'undisclosed')}]]></reference_id>

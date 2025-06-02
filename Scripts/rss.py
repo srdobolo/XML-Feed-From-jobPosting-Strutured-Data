@@ -82,7 +82,7 @@ def rss():
                     rss_feed += f'''  
         <item>
             <title><![CDATA[{data.get('title', 'undisclosed')}]]></title>
-            <link><![CDATA[{job_url}?id={data.get('identifier', {}).get('value', 'undisclosed')}&utm_source=RSS_FEED]]></link>  
+            <link><![CDATA[{job_url}]]></link>  
             <description><![CDATA[{data.get('description', 'undisclosed')}]]></description>
         </item>'''
                     success_count += 1

@@ -66,7 +66,7 @@ def feed():
               <title><![CDATA[{data.get('title', 'undisclosed')}]]></title>
               <date><![CDATA[{data.get('datePosted', 'undisclosed')}]]></date>
               <referencenumber><![CDATA[{data.get('identifier', {}).get('value', 'undisclosed')}]]></referencenumber>
-              <url><![CDATA[{job_url}?id={data.get('identifier', {}).get('value', 'undisclosed')}]]></url>
+              <url><![CDATA[{job_url}]]></url>
               <company><![CDATA[{data.get('hiringOrganization', {}).get('name', 'undisclosed')}]]></company>
               <location><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressLocality', 'undisclosed')}]]></location>
               <city><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressLocality', 'undisclosed')}]]></city>

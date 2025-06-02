@@ -79,7 +79,7 @@ def careerjet():
             <job> 
               <id><![CDATA[{data.get('identifier', {}).get('value', 'undisclosed')}]]></id>
               <title><![CDATA[{data.get('title', 'undisclosed')}]]></title>
-              <url><![CDATA[{job_url}?id={data.get('identifier', {}).get('value', 'undisclosed')}&utm_source=CAREERJET]]></url>
+              <url><![CDATA[{job_url}]]></url>
               <location>
                 <city><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressLocality', 'undisclosed')}]]></city>
                 <region><![CDATA[{data.get('jobLocation', {}).get('address', {}).get('addressRegion', 'undisclosed')}]]></region>

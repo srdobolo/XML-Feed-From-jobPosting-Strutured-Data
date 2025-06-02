@@ -134,7 +134,7 @@ def talentcom():
               <dateposted><![CDATA[{data.get('datePosted', 'undisclosed')}]]></dateposted>
               <expirationdate><![CDATA[{data.get('validThrough', 'undisclosed')}]]></expirationdate>
               <referencenumber><![CDATA[{data.get('identifier', {}).get('value', 'undisclosed')}]]></referencenumber>
-              <url><![CDATA[{job_url}?id={data.get('identifier', {}).get('value', 'undisclosed')}&utm_source=TALENT_COM]]></url>
+              <url><![CDATA[{job_url}]]></url>
               <description><![CDATA[{data.get('description', 'undisclosed')}]]></description>
               <salary>
                 <salary_max><![CDATA[{max_salary}]]></salary_max>

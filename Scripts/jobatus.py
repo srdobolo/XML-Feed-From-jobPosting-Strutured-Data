@@ -79,7 +79,7 @@ def jobatus(session=None):
                     data = json.loads(json_content)
                     rss_feed += f'''
             <ad>
-              <url><![CDATA[{job_url}?id={data.get('identifier', {}).get('value', 'undisclosed')}]]></url>  
+              <url><![CDATA[{job_url}]]></url>  
               <title><![CDATA[{data.get('title', 'undisclosed')}]]></title>
               <content><![CDATA[{data.get('description', 'undisclosed')}]]></content>
               <company><![CDATA[Recruityard]]></company>
