@@ -1,67 +1,21 @@
-import requests
-from requests.adapters import HTTPAdapter
-from urllib3.util.retry import Retry
-from bs4 import BeautifulSoup
-import json
-import html
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import logging
+from Utils.job_fetcher import fetch_all_jobs
 
-# Set up logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-def create_resilient_session():
-    session = requests.Session()
-    retries = Retry(total=3, backoff_factor=1, status_forcelist=[500, 502, 503, 504, 104])
-    adapter = HTTPAdapter(max_retries=retries)
-    session.mount("http://", adapter)
-    session.mount("https://", adapter)
-    return session
-
-def fetch_url(session, url, timeout=10):
-    try:
-        response = session.get(url, timeout=timeout)
-        response.raise_for_status()
-        logging.info("Successfully fetched %s", url)
-        return response.content
-    except requests.exceptions.RequestException as e:
-        logging.error("Failed to fetch %s: %s", url, e)
-        raise
-
-def feed():
-    base_url = 'https://recruityard.com/find-jobs-all/'
-    session = create_resilient_session()
-
-    # Load the main jobs page to find all job links
-    try:
-        html_content = fetch_url(session, base_url)
-    except Exception as e:
-        logging.error("Aborting feed generation due to initial fetch failure: %s", e)
-        return
-
-    # Parse the HTML with BeautifulSoup to find all job links
-    soup = BeautifulSoup(html_content, 'html.parser')
-    job_links = list(set([a['href'] for a in soup.find_all('a', href=True) if '/find-jobs-all/' in a['href']]))
-    logging.info("Found %d unique job links", len(job_links))
-
-    # Prepare the base of the RSS feed
+def feed(job_data_list):
     rss_feed = '''<?xml version="1.0" encoding="UTF-8"?>
 <source>
     <publisher>Recruityard</publisher>
     <publisherurl>https://www.recruityard.com</publisherurl>'''
 
     # Iterate over each job link, fetch its content, and extract the JSON
-    for job_link in job_links:
-        job_url = base_url + job_link.split('/')[-1]
-        try:
-            job_html_content = fetch_url(session, job_url)
-            job_soup = BeautifulSoup(job_html_content, 'html.parser')
-            script_tag = job_soup.find('script', type='application/ld+json')
-
-            if script_tag and script_tag.string:
-                json_content = html.unescape(script_tag.string)
-                try:
-                    data = json.loads(json_content)
-                    rss_feed += f'''
+    for data in job_data_list:
+        job_url = data.get('url', 'undisclosed')
+        rss_feed += f'''
             <job>
               <title><![CDATA[{data.get('title', 'undisclosed')}]]></title>
               <date><![CDATA[{data.get('datePosted', 'undisclosed')}]]></date>
@@ -80,11 +34,6 @@ def feed():
               <salary><![CDATA[{data.get('baseSalary', {}).get('value', {}).get('value', 'undisclosed')}]]></salary>
               <email><![CDATA[info@recruityard.com]]></email>
             </job>'''
-                except json.JSONDecodeError as e:
-                    logging.warning("Error decoding JSON from %s: %s", job_url, e)
-        except Exception as e:
-            logging.warning("Skipping job %s due to fetch error: %s", job_url, e)
-            continue
 
     # Close the RSS feed
     rss_feed += '''
@@ -99,4 +48,5 @@ def feed():
         logging.error("Failed to write feed.xml: %s", e)
 
 if __name__ == "__main__":
-    feed()
+    job_data_list = fetch_all_jobs()
+    feed(job_data_list)
