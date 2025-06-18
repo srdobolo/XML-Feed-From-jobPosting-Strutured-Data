@@ -1,83 +1,19 @@
-import requests
-from requests.adapters import HTTPAdapter
-from urllib3.util.retry import Retry
-from bs4 import BeautifulSoup
-import json
-import html
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 import logging
-import time
+from Utils.job_fetcher import fetch_all_jobs
 
-# Set up logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-# Shared session setup with enhanced retry logic
-def create_resilient_session():
-    session = requests.Session()
-    retries = Retry(
-        total=3,  # Retry 3 times
-        backoff_factor=1,  # Wait 1, 2, 4 seconds between retries
-        status_forcelist=[500, 502, 503, 504],  # Retry on server errors
-        connect=3,  # Retry on connection errors (e.g., ConnectionResetError)
-        read=3,  # Retry on read errors
-        allowed_methods=["GET"]
-    )
-    adapter = HTTPAdapter(max_retries=retries)
-    session.mount("http://", adapter)
-    session.mount("https://", adapter)
-    return session
-
-def fetch_url(session, url, timeout=10):
-    try:
-        response = session.get(url, timeout=timeout)
-        response.raise_for_status()
-        logging.info("Successfully fetched %s", url)
-        return response.content
-    except requests.exceptions.ConnectionError as e:
-        logging.error("Connection error for %s: %s", url, e)
-        raise
-    except requests.exceptions.Timeout as e:
-        logging.error("Timeout error for %s: %s", url, e)
-        raise
-    except requests.exceptions.RequestException as e:
-        logging.error("General request error for %s: %s", url, e)
-        raise
-
-def jobatus(session=None):
-    if session is None:
-        session = create_resilient_session()
-
-    # Base URL for the find-jobs section
-    base_url = 'https://recruityard.com/find-jobs-all/'
-
-    # Load the main jobs page to find all job links
-    try:
-        html_content = fetch_url(session, base_url)
-    except requests.exceptions.RequestException:
-        logging.error("Failed to load base URL, aborting jobatus feed generation.")
-        return  # Exit early if the base page can’t be loaded
-
-    # Parse the HTML with BeautifulSoup to find all job links
-    soup = BeautifulSoup(html_content, 'html.parser')
-    job_links = list(set([a['href'] for a in soup.find_all('a', href=True) 
-                          if '/find-jobs-all/' in a['href'] and a['href'].endswith('pt')]))
-
-    # Prepare the base of the RSS feed
+def jobatus(job_data_list):
     rss_feed = '''<?xml version="1.0" encoding="UTF-8"?>
 <jobatus>'''
 
     # Iterate over each job link, fetch its content, and extract the JSON
-    for job_link in job_links:
-        job_url = base_url + job_link.split('/')[-1]
-        try:
-            job_html_content = fetch_url(session, job_url)
-            job_soup = BeautifulSoup(job_html_content, 'html.parser')
-            script_tag = job_soup.find('script', type='application/ld+json')
-
-            if script_tag and script_tag.string:
-                json_content = html.unescape(script_tag.string)
-                try:
-                    data = json.loads(json_content)
-                    rss_feed += f'''
+    for data in job_data_list:
+        job_url = data.get('url', 'undisclosed')
+        rss_feed += f'''
             <ad>
               <url><![CDATA[{job_url}]]></url>  
               <title><![CDATA[{data.get('title', 'undisclosed')}]]></title>
@@ -95,16 +31,7 @@ def jobatus(session=None):
                                 if data.get('jobLocation', {}).get('address', {}).get('addressRegion', 'undisclosed') == 'Lisbon' 
                                 else data.get('jobLocation', {}).get('address', {}).get('addressRegion', 'undisclosed')}]]></region>
             </ad>'''
-                except json.JSONDecodeError:
-                    logging.error("Error decoding JSON from %s", job_url)
-        except requests.exceptions.RequestException:
-            logging.warning("Skipping job link %s due to fetch error", job_url)
-            continue  # Skip this job link and move to the next one
-        
-        # Add a small delay to avoid overwhelming the server
-        time.sleep(1)  # 1-second delay between requests
-
-    # Close the RSS feed
+                
     rss_feed += '''
 </jobatus>'''
 
@@ -117,4 +44,5 @@ def jobatus(session=None):
         logging.error("Failed to write jobatus.xml: %s", e)
 
 if __name__ == "__main__":
-    jobatus()
+    job_data_list = fetch_all_jobs()
+    jobatus(job_data_list)
