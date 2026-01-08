@@ -144,7 +144,7 @@ wcwidth==0.2.12
 webdriver-manager==4.0.2
 webencodings==0.5.1
 websockets==10.4
-Werkzeug==2.2.3
+Werkzeug==3.1.5
 wsproto==1.2.0
 zipp==3.15.0
 zope.interface==6.1
